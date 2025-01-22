@@ -1,0 +1,18 @@
+# You can add other services your application may depend on here, such as a
+# https://github.com/docker/awesome-compose
+name: fincheck
+
+services:
+  postgres:
+    image: bitnami/postgresql:16
+    container_name: fincheck-api-postgres
+    restart: always
+    env_file:
+      - .env.docker
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+volumes:
+  postgres_data:

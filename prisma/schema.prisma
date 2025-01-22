@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String @id @default(uuid())
+  name         String
+  email        String @unique
+  passwordHash String @map("password_hash")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  bankAccount BankAccount[]
+  transaction Transaction[]
+  category    Category[]
+
+  @@map("users")
+}
+
+enum BankAccountType {
+  CHECKING
+  INVESTMENT
+  CASH
+
+  @@map("bank_account_types")
+}
+
+model BankAccount {
+  id      String          @id @default(uuid())
+  userId  String
+  name    String
+  balance Decimal         @default(0)
+  color   String
+  type    BankAccountType
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user        User          @relation(fields: [userId], references: [id])
+  transaction Transaction[]
+
+  @@map("bank_accounts")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+
+  @@map("transaction_types")
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  userId        String
+  bankAccountId String
+  categoryId    Int
+  description   String
+  amount        Decimal
+  type          TransactionType
+
+  timestamp DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  bankAccount BankAccount @relation(fields: [bankAccountId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
+
+  @@map("transactions")
+}
+
+model Category {
+  id     Int    @id @default(autoincrement())
+  userId String
+  label  String
+  icon   String
+
+  Transaction Transaction[]
+  user        User          @relation(fields: [userId], references: [id])
+
+  @@map("categories")
+}
