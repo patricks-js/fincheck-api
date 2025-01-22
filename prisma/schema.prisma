@@ -79,7 +79,7 @@ model Category {
   label  String
   icon   String
 
-  Transaction Transaction[]
+  transaction Transaction[]
   user        User          @relation(fields: [userId], references: [id])
 
   @@map("categories")
