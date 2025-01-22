@@ -5,7 +5,7 @@ name: fincheck
 services:
   postgres:
     image: bitnami/postgresql:16
-    container_name: fincheck-api-postgres
+    container_name: postgres
     restart: always
     env_file:
       - .env.docker

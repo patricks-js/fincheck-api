@@ -33,7 +33,7 @@ enum BankAccountType {
 
 model BankAccount {
   id      String          @id @default(uuid())
-  userId  String
+  userId  String          @map("user_id")
   name    String
   balance Decimal         @default(0)
   color   String
@@ -57,9 +57,9 @@ enum TransactionType {
 
 model Transaction {
   id            String          @id @default(cuid())
-  userId        String
-  bankAccountId String
-  categoryId    Int
+  userId        String          @map("user_id")
+  bankAccountId String          @map("bank_account_id")
+  categoryId    Int             @map("category_id")
   description   String
   amount        Decimal
   type          TransactionType
@@ -75,7 +75,7 @@ model Transaction {
 
 model Category {
   id     Int    @id @default(autoincrement())
-  userId String
+  userId String @map("user_id")
   label  String
   icon   String
 
