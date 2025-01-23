@@ -59,7 +59,7 @@ model Transaction {
   id            String          @id @default(cuid())
   userId        String          @map("user_id")
   bankAccountId String          @map("bank_account_id")
-  categoryId    Int             @map("category_id")
+  categoryId    Int?            @map("category_id")
   description   String
   amount        Decimal
   type          TransactionType
@@ -67,7 +67,7 @@ model Transaction {
 
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   bankAccount BankAccount @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
-  category    Category    @relation(fields: [categoryId], references: [id])
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("transactions")
 }
