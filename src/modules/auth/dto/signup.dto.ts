@@ -5,7 +5,11 @@ import {
   IsStrongPassword,
 } from "class-validator";
 
-export class AuthenticateDTO {
+export class SignUpDTO {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
   @IsString()
   @IsNotEmpty()
   @IsEmail({}, { message: "invalid email" })
